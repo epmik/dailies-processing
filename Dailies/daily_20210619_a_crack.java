@@ -21,7 +21,7 @@ import Procedural.*;
 import Utility.Easing;
 import Utility.Math;
 
-public class daily_20210619_a extends PApplet {
+public class daily_20210619_a_crack extends PApplet {
   private int ScreenWidth = 768;
   private int ScreenHeight = 768;
   private double SketchResolutionMultiplier = 1.0;

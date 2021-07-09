@@ -26,7 +26,7 @@ import Utility.Color20210703;
 import Utility.Easing;
 import Utility.Math;
 
-public class daily_20210630_a extends AbstractDaily 
+public class daily_20210630_a_noise_and_warp_visualizer extends AbstractDaily 
 {
   private float _xNoiseMultiplier = 0.00125F;
   private float _yNoiseMultiplier = 0.00125F;
@@ -36,7 +36,7 @@ public class daily_20210630_a extends AbstractDaily
   // private PImage _skinColorPick;
   // private int _skinColorRow;
 
-  public daily_20210630_a() 
+  public daily_20210630_a_noise_and_warp_visualizer() 
   {
     super();
 

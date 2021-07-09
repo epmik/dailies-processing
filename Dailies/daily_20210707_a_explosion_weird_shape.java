@@ -32,7 +32,7 @@ import Utility.ColorPicker;
 import Utility.Easing;
 import Utility.Math;
 
-public class daily_20210707_a extends AbstractDaily 
+public class daily_20210707_a_explosion_weird_shape extends AbstractDaily 
 {
   private float _boxRotation;
   private float _directionalLightRotation;
@@ -53,7 +53,7 @@ public class daily_20210707_a extends AbstractDaily
 
   private ArrayList<IExplode> _explodeArrayList = new ArrayList<IExplode>();
 
-  public daily_20210707_a() 
+  public daily_20210707_a_explosion_weird_shape() 
   {
     super();
 

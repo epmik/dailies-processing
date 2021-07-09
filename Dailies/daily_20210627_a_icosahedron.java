@@ -25,7 +25,7 @@ import Utility.Color20210703;
 import Utility.Easing;
 import Utility.Math;
 
-public class daily_20210627_a extends AbstractDaily 
+public class daily_20210627_a_icosahedron extends AbstractDaily 
 {
   // private boolean _warpSky;
   // private boolean _warpLand;
@@ -52,7 +52,7 @@ public class daily_20210627_a extends AbstractDaily
   private float _zPositionOffsetStrenth;
   private Icosahedron _icosahedron;
 
-  public daily_20210627_a() 
+  public daily_20210627_a_icosahedron() 
   {
     super();
 

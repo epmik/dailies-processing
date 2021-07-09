@@ -26,7 +26,7 @@ import Utility.Color20210703;
 import Utility.Easing;
 import Utility.Math;
 
-public class daily_20210628_a extends AbstractDaily 
+public class daily_20210628_a_icosahedron_deformed extends AbstractDaily 
 {
   // private boolean _warpSky;
   // private boolean _warpLand;
@@ -55,7 +55,7 @@ public class daily_20210628_a extends AbstractDaily
   private Icosahedron _icosahedron;
   // private PeasyCam _camera;
 
-  public daily_20210628_a() 
+  public daily_20210628_a_icosahedron_deformed() 
   {
     super();
 

@@ -32,7 +32,7 @@ import Utility.ColorPicker;
 import Utility.Easing;
 import Utility.Math;
 
-public class daily_20210706_a extends AbstractDaily 
+public class daily_20210706_a_leaves_colorfull extends AbstractDaily 
 {
   private boolean _randomLeafAngle = true;
 
@@ -69,7 +69,7 @@ public class daily_20210706_a extends AbstractDaily
 
   private float _xdeviationFactor = 0.05F;
 
-  public daily_20210706_a() 
+  public daily_20210706_a_leaves_colorfull() 
   {
     super();
 

@@ -27,7 +27,7 @@ import Utility.Color20210703;
 import Utility.Easing;
 import Utility.Math;
 
-public class daily_20210701_a extends AbstractDaily 
+public class daily_20210701_a_drawing_lines extends AbstractDaily 
 {
   private boolean _enableWarp = true;
   private int _warpStrength = 4;
@@ -136,7 +136,7 @@ public class daily_20210701_a extends AbstractDaily
     }
   }
 
-  public daily_20210701_a() 
+  public daily_20210701_a_drawing_lines() 
   {
     super();
 

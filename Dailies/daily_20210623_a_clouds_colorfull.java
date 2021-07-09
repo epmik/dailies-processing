@@ -23,7 +23,7 @@ import Utility.Color20210703;
 import Utility.Easing;
 import Utility.Math;
 
-public class daily_20210623_a extends AbstractDaily 
+public class daily_20210623_a_clouds_colorfull extends AbstractDaily 
 {
   private boolean _enableWarp;
   private float _warpStrength;
@@ -34,7 +34,7 @@ public class daily_20210623_a extends AbstractDaily
   private PImage _background;
   private PImage _palette;
 
-  public daily_20210623_a() 
+  public daily_20210623_a_clouds_colorfull() 
   {
     super();
 
@@ -103,10 +103,10 @@ public class daily_20210623_a extends AbstractDaily
 
     // guiY += guiOffsetY;
 
-    _palette = loadImage("input/daily_20210623/clouds.png");
+    _palette = loadImage(PathCombine(ClassFolderInput(), "clouds.png"));
     _palette.loadPixels();
 
-    _background = loadImage("input/daily_20210623/background.png");
+    _background = loadImage(PathCombine(ClassFolderInput(), "background.png"));
     _background.loadPixels();
 
     System.out.println("setup done");

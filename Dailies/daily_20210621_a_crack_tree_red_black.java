@@ -22,7 +22,7 @@ import Utility.Color20210703;
 import Utility.Easing;
 import Utility.Math;
 
-public class daily_20210621_a extends AbstractDaily 
+public class daily_20210621_a_crack_tree_red_black extends AbstractDaily 
 {
   private boolean _enableWarp;
   private float _warpDistance;
@@ -32,7 +32,7 @@ public class daily_20210621_a extends AbstractDaily
   private float _innerEllipseRadius;
   private float _outerEllipseRadius;
 
-  public daily_20210621_a() 
+  public daily_20210621_a_crack_tree_red_black() 
   {
     super();
 
