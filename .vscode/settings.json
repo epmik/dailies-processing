@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries":[
+        "../libraries/**/*.jar",
+        "../../Processing Libraries/Processing-3.5.4/**/*.jar"
+    ]
+}
