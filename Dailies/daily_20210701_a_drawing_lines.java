@@ -170,7 +170,7 @@ public class daily_20210701_a_drawing_lines extends AbstractDaily
 
     guiY += guiOffsetY;
 
-    _colorPick = loadImage(PathCombine(ClassFolderInput(), "colors.png"));
+    _colorPick = loadImage(ResolveInputFile("colors.png"));
     _colorPick.loadPixels();
 
     for (var i = 0; i < _numberOfColorFields; i++) {

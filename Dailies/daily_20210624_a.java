@@ -114,10 +114,10 @@ public class daily_20210624_a extends AbstractDaily
 
     // guiY += guiOffsetY;
 
-    _cloudColorPick = loadImage(PathCombine(ClassFolderInput(), "clouds.png"));
+    _cloudColorPick = loadImage(ResolveInputFile("clouds.png"));
     _cloudColorPick.loadPixels();
 
-    _backgroundColorPick = loadImage(PathCombine(ClassFolderInput(), "background.png"));
+    _backgroundColorPick = loadImage(ResolveInputFile("background.png"));
     _backgroundColorPick.loadPixels();
 
     System.out.println("setup done");

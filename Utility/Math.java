@@ -158,6 +158,11 @@ public class Math
     return normalized * (mapMax - mapMin) + mapMin;
   }  
 
+	public static double Clamp(double value)
+  {
+      return Clamp(value, 0.0, 1.0);
+  }
+  
 	public static double Clamp(double value, double min, double max)
 	{
     if (value > max) 

@@ -182,7 +182,7 @@ public class daily_20210627_a_icosahedron extends AbstractDaily
 
     // guiY += guiOffsetY;
   
-     _skinColorPick = loadImage(PathCombine(ClassFolderInput(), "skin.png"));
+     _skinColorPick = loadImage(ResolveInputFile("skin.png"));
      _skinColorPick.loadPixels();
 
      _skinColorRow = RandomGenerator.Value(0, _skinColorPick.height);

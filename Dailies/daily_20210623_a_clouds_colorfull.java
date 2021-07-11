@@ -5,6 +5,7 @@ package Dailies;
 import processing.core.*;
 import processing.event.MouseEvent;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.time.Duration;
 import java.time.Instant;
@@ -50,7 +51,7 @@ public class daily_20210623_a_clouds_colorfull extends AbstractDaily
   }
 
   @Override
-  public void setup() 
+  public void setup()
   {
     super.setup();
 
@@ -103,10 +104,10 @@ public class daily_20210623_a_clouds_colorfull extends AbstractDaily
 
     // guiY += guiOffsetY;
 
-    _palette = loadImage(PathCombine(ClassFolderInput(), "clouds.png"));
+    _palette = loadImage(ResolveInputFile("clouds.png"));
     _palette.loadPixels();
 
-    _background = loadImage(PathCombine(ClassFolderInput(), "background.png"));
+    _background = loadImage(ResolveInputFile("background.png"));
     _background.loadPixels();
 
     System.out.println("setup done");

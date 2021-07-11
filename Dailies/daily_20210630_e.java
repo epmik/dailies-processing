@@ -200,7 +200,7 @@ public class daily_20210630_e extends AbstractDaily
 
     // DrawBackgroundGradient(_backgroundCanvas, _backgroundNoiseGenerator);
 
-     _colorPick = loadImage(PathCombine(ClassFolderInput(), "colors.png"));
+     _colorPick = loadImage(ResolveInputFile("colors.png"));
      _colorPick.loadPixels();
 
      _colorPickRow = RandomGenerator.Value(0, _colorPick.height);

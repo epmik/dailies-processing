@@ -5,48 +5,54 @@ import Procedural.Interfaces.IRandomGenerator;
 
 public class Color
 {
-  private static final double ByteToFloatFactor = 0.0039215686274509803921568627451;
+  private static final double ByteToDoubleFactor = 0.0039215686274509803921568627451;
   private static IRandomGenerator RandomGenerator = new RandomGenerator();
   private static ColorPicker DefaultColorPicker = new ColorPicker();
-  
+ 
+  public static double Red(int color) 
+  {
+    return (color >> 16 & 0xff) / 255.0;
+  }
+
+  public static double Green(int color) 
+  {
+    return (color >> 8 & 0xff) / 255.0;
+  }
+
+  public static double Blue(int color) 
+  {
+    return (color & 0xff) / 255.0;
+  }
+ 
   public static double Hue(int color) 
   {
-    var hsb = IntToHsba(color);
+    var hsb = IntToHsb(color);
 
     return hsb[0];
   }
   
   public static double Saturation(int color) 
   {
-    var hsb = IntToHsba(color);
+    var hsb = IntToHsb(color);
 
     return hsb[1];
   }
   
   public static double Brightness(int color) 
   {
-    var hsb = IntToHsba(color);
+    var hsb = IntToHsb(color);
 
     return hsb[2];
   }
   
   public static double Alpha(int color) 
   {
-    var hsb = IntToHsba(color);
-
-    return hsb[3];
+    return (color >> 24 & 0xff) / 255.0;
   }
   
-  public static double[] IntToHsba(int color) 
+  public static double[] IntToHsb(int color) 
   {
-    var rgba = IntToRgba(color);
-
-    return RgbaToHsba(rgba[0], rgba[1], rgba[2], rgba[3]);
-  }
-    
-  public static double[] RgbaToHsba(int [] rgba) 
-  {
-    return RgbaToHsba(rgba[0], rgba[1], rgba[2], rgba[3]);
+    return RgbToHsb(IntToRgb(color));
   }
   
     /**
@@ -114,88 +120,127 @@ public class Color
       // mostly copied from
       // http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/java/awt/Color.java
 
-      int r = 0, g = 0, b = 0, a = (int)(alpha * 255);
+      int r = 0, g = 0, b = 0, a = (int) (alpha * 255);
 
-      if (saturation == 0) 
-      {
+      if (saturation == 0) {
         r = g = b = (int) (brightness * 255.0 + 0.5);
-      } 
-      else 
-      {
+      } else {
         double h = (hue - java.lang.Math.floor(hue)) * 6.0;
         double f = h - java.lang.Math.floor(h);
         double p = brightness * (1.0f - saturation);
         double q = brightness * (1.0f - saturation * f);
         double t = brightness * (1.0f - (saturation * (1.0f - f)));
-          switch ((int) h) {
+        switch ((int) h) {
           case 0:
-              r = (int) (brightness * 255.0f + 0.5f);
-              g = (int) (t * 255.0f + 0.5f);
-              b = (int) (p * 255.0f + 0.5f);
-              break;
+            r = (int) (brightness * 255.0f + 0.5f);
+            g = (int) (t * 255.0f + 0.5f);
+            b = (int) (p * 255.0f + 0.5f);
+            break;
           case 1:
-              r = (int) (q * 255.0f + 0.5f);
-              g = (int) (brightness * 255.0f + 0.5f);
-              b = (int) (p * 255.0f + 0.5f);
-              break;
+            r = (int) (q * 255.0f + 0.5f);
+            g = (int) (brightness * 255.0f + 0.5f);
+            b = (int) (p * 255.0f + 0.5f);
+            break;
           case 2:
-              r = (int) (p * 255.0f + 0.5f);
-              g = (int) (brightness * 255.0f + 0.5f);
-              b = (int) (t * 255.0f + 0.5f);
-              break;
+            r = (int) (p * 255.0f + 0.5f);
+            g = (int) (brightness * 255.0f + 0.5f);
+            b = (int) (t * 255.0f + 0.5f);
+            break;
           case 3:
-              r = (int) (p * 255.0f + 0.5f);
-              g = (int) (q * 255.0f + 0.5f);
-              b = (int) (brightness * 255.0f + 0.5f);
-              break;
+            r = (int) (p * 255.0f + 0.5f);
+            g = (int) (q * 255.0f + 0.5f);
+            b = (int) (brightness * 255.0f + 0.5f);
+            break;
           case 4:
-              r = (int) (t * 255.0f + 0.5f);
-              g = (int) (p * 255.0f + 0.5f);
-              b = (int) (brightness * 255.0f + 0.5f);
-              break;
+            r = (int) (t * 255.0f + 0.5f);
+            g = (int) (p * 255.0f + 0.5f);
+            b = (int) (brightness * 255.0f + 0.5f);
+            break;
           case 5:
-              r = (int) (brightness * 255.0f + 0.5f);
-              g = (int) (p * 255.0f + 0.5f);
-              b = (int) (q * 255.0f + 0.5f);
-              break;
-          }
+            r = (int) (brightness * 255.0f + 0.5f);
+            g = (int) (p * 255.0f + 0.5f);
+            b = (int) (q * 255.0f + 0.5f);
+            break;
+        }
       }
       return RgbToInt(r, g, b, a);
-  }
+    }
+    
+    public static double[] RgbToHsb(int [] rgba) 
+    {
+      return RgbToHsb(rgba[0], rgba[1], rgba[2], rgba[3]);
+    }
+    
+    public static double[] RgbToHsb(float [] rgba) 
+    {
+      return RgbToHsb(rgba[0], rgba[1], rgba[2], rgba[3]);
+    }
+    
+    public static double[] RgbToHsb(double [] rgba) 
+    {
+      return RgbToHsb(rgba[0], rgba[1], rgba[2], rgba[3]);
+    }
+  
+    public static double[] RgbToHsb(int r, int g, int b)
+    {
+      return RgbToHsb(r, g, b, 255);
+    }
 
-  public static double[] RgbaToHsba(int r, int g, int b, int a) 
+    public static double[] RgbToHsb(float r, float g, float b)
+    {
+      return RgbToHsb(r, g, b, 1.0f);
+    }
+
+    public static double[] RgbToHsb(double r, double g, double b)
+    {
+      return RgbToHsb(r, g, b, 1.0);
+    }
+
+    public static double[] RgbToHsb(float r, float g, float b, float a)
+    {
+      return RgbToHsb((int) (r * 255.0f), (int) (g * 255.0f), (int) (b * 255.0f), (int) (a * 255.0f));
+    }
+
+    public static double[] RgbToHsb(double r, double g, double b, double a)
+    {
+      return RgbToHsb((int) (r * 255.0), (int) (g * 255.0), (int) (b * 255.0), (int) (a * 255.0));
+    }
+  
+  public static double[] RgbToHsb(int r, int g, int b, int a) 
   {
     // mostly copied from
     // http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/java/awt/Color.java
 
-    double hue, saturation, brightness, alpha = (double)a / 255.0;
+    double hue, saturation, brightness, alpha = (double) a / 255.0;
     var hsbvals = new double[4];
 
     int cmax = (r > g) ? r : g;
-    if (b > cmax) cmax = b;
+    if (b > cmax)
+      cmax = b;
     int cmin = (r < g) ? r : g;
-    if (b < cmin) cmin = b;
+    if (b < cmin)
+      cmin = b;
 
     brightness = ((double) cmax) / 255.0f;
     if (cmax != 0)
-        saturation = ((double) (cmax - cmin)) / ((double) cmax);
+      saturation = ((double) (cmax - cmin)) / ((double) cmax);
     else
-        saturation = 0;
+      saturation = 0;
     if (saturation == 0)
-        hue = 0;
+      hue = 0;
     else {
       double redc = ((double) (cmax - r)) / ((double) (cmax - cmin));
       double greenc = ((double) (cmax - g)) / ((double) (cmax - cmin));
       double bluec = ((double) (cmax - b)) / ((double) (cmax - cmin));
-        if (r == cmax)
-            hue = bluec - greenc;
-        else if (g == cmax)
-            hue = 2.0f + redc - bluec;
-        else
-            hue = 4.0f + greenc - redc;
-        hue = hue / 6.0f;
-        if (hue < 0)
-            hue = hue + 1.0f;
+      if (r == cmax)
+        hue = bluec - greenc;
+      else if (g == cmax)
+        hue = 2.0f + redc - bluec;
+      else
+        hue = 4.0f + greenc - redc;
+      hue = hue / 6.0f;
+      if (hue < 0)
+        hue = hue + 1.0f;
     }
     hsbvals[0] = hue;
     hsbvals[1] = saturation;
@@ -203,55 +248,79 @@ public class Color
     hsbvals[3] = alpha;
 
     return hsbvals;
-}  
-
-  public static double[] RgbaToDouble(int r, int g, int b, int a) 
-  {
-    return RgbaToDouble(RgbToInt(r, g, b, a));
   }
 
-  public static double[] RgbaToDouble(int color) 
+
+
+
+  // public static double[] RgbaToDouble(int r, int g, int b, int a) 
+  // {
+  //   return RgbaToDouble(RgbToInt(r, g, b, a));
+  // }
+
+  // public static double[] RgbaToDouble(int color) 
+  // {
+  //   return new double[] {
+  //     ByteToFloatFactor * (color >> 16 & 0xff),   // r
+  //     ByteToFloatFactor * (color >> 8 & 0xff),    // g
+  //     ByteToFloatFactor * (color & 0xff),         // b
+  //     ByteToFloatFactor * (color >> 24 & 0xff),   // a
+  //   };
+  // }
+
+  // public static int[] IntToRgba(int color) 
+  // {
+  //   return new int[] {
+  //     (color >> 16 & 0xff),   // r
+  //     (color >> 8 & 0xff),    // g
+  //     (color & 0xff),         // b
+  //     (color >> 24 & 0xff),   // a
+  //   };
+  // }
+
+  public static double[] IntToRgb(int color) 
   {
     return new double[] {
-      ByteToFloatFactor * (color >> 16 & 0xff),   // r
-      ByteToFloatFactor * (color >> 8 & 0xff),    // g
-      ByteToFloatFactor * (color & 0xff),         // b
-      ByteToFloatFactor * (color >> 24 & 0xff),   // a
-    };
-  }
-
-  public static int[] IntToRgba(int color) 
-  {
-    return new int[] {
-      (color >> 16 & 0xff),   // r
-      (color >> 8 & 0xff),    // g
-      (color & 0xff),         // b
-      (color >> 24 & 0xff),   // a
+      (color >> 16 & 0xff) * ByteToDoubleFactor,   // r
+      (color >> 8 & 0xff) * ByteToDoubleFactor,    // g
+      (color & 0xff) * ByteToDoubleFactor,         // b
+      (color >> 24 & 0xff) * ByteToDoubleFactor,   // a
     };
   }
 
   public static int RgbToInt(int r, int g, int b, int a) 
   {
-    return (int)(
-      a << 24 |
-      r << 16 |
-      g << 8 |
-      b);
+    return (int)(a << 24 | r << 16 | g << 8 | b);
   }
 
   public static int RgbToInt(float r, float g, float b, float a) 
   {
-    return RgbToInt(r * 255, g * 255, b * 255, a * 255);
+    return RgbToInt((int)(r * 255), (int)(g * 255), (int)(b * 255), (int)(a * 255));
   }
 
   public static int RgbToInt(double r, double g, double b, double a) 
   {
-    return RgbToInt(r * 255, g * 255, b * 255, a * 255);
+    return RgbToInt((int)(r * 255), (int)(g * 255), (int)(b * 255), (int)(a * 255));
   }
 
   public static int RgbToInt(int r, int g, int b) 
   {
     return RgbToInt(r, g, b, 255);
+  }
+
+  public static int RgbToInt(int grey) 
+  {
+    return RgbToInt(grey, grey, grey, 255);
+  }
+
+  public static int RgbToInt(float grey) 
+  {
+    return RgbToInt(grey, grey, grey, 1.0f);
+  }
+
+  public static int RgbToInt(double grey) 
+  {
+    return RgbToInt(grey, grey, grey, 1.0);
   }
 
   public static int RgbToInt(float r, float g, float b) 
@@ -390,11 +459,6 @@ public class Color
   {
     return DefaultColorPicker.RandomColor();
   }
-
-  // public static int RandomColor(IRandomGenerator randomGenerator)
-  // {
-  //   return DefaultColorPicker.RandomColor(randomGenerator);
-  // }
 
   public static int RandomColor(int hue)
   {

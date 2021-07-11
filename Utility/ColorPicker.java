@@ -32,8 +32,8 @@ public class ColorPicker
 
     public WeightedColorPicker(double weight, int fromColor, int toColor, IRandomGenerator randomGenerator) 
     {
-      var fromHsba = Color.IntToHsba(fromColor);
-      var toHsba = Color.IntToHsba(toColor);
+      var fromHsba = Color.IntToHsb(fromColor);
+      var toHsba = Color.IntToHsb(toColor);
 
       _randomGenerator = randomGenerator;
 
@@ -55,8 +55,9 @@ public class ColorPicker
       var h = RandomHue();
       var s = RandomSaturation();
       var b = RandomBrightness();
+      var a = RandomAlpha();
 
-      return Color.HsbToInt(h, s, b, 1.0);
+      return Color.HsbToInt(h, s, b, a);
     }
     
     private double RandomHue() {

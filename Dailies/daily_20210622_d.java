@@ -102,7 +102,7 @@ public class daily_20210622_d extends AbstractDaily
 
     // guiY += guiOffsetY;
 
-    _palette = loadImage("input/daily_20210622/palette.png");
+    _palette = loadImage("palette.png");
     _palette.loadPixels();
 
     System.out.println("setup done");

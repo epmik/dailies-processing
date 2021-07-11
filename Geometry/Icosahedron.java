@@ -17,7 +17,7 @@ public class Icosahedron
     public List<Integer> TriangleIndices = new ArrayList<Integer>();
 
     // add vertex to mesh, fix position to be on unit sphere, return index
-    public int addVertex(Point3D p)
+    public int AddVertex(Point3D p)
     {
         double length = Math.sqrt(p.X * p.X + p.Y * p.Y + p.Z * p.Z);
         
@@ -27,7 +27,7 @@ public class Icosahedron
     }
 
     // return index of point in the middle of p1 and p2
-    public int getMiddlePoint(int p1, int p2)
+    private int InsertMiddlePoint(int p1, int p2)
     {
         // first check if we have it already
         boolean firstIsSmaller = p1 < p2;
@@ -51,7 +51,7 @@ public class Icosahedron
             (point1.Z + point2.Z) / 2.0);
 
         // add vertex makes sure point is on unit sphere
-        int i = addVertex(middle); 
+        int i = AddVertex(middle); 
 
         // store it, return index
         this.middlePointIndexCache.put(key, i);
@@ -62,27 +62,26 @@ public class Icosahedron
     public static Icosahedron Create(int recursionLevel)
     {
         var icosahedron = new Icosahedron();
-        // this.geometry = new MeshGeometry3D();
         icosahedron.middlePointIndexCache = new HashMap<Long, Integer>();
         icosahedron.index = 0;
 
         // create 12 vertices of a icosahedron
         var t = (1.0 + Math.sqrt(5.0)) / 2.0;
 
-        icosahedron.addVertex(new Point3D(-1,  t,  0));
-        icosahedron.addVertex(new Point3D( 1,  t,  0));
-        icosahedron.addVertex(new Point3D(-1, -t,  0));
-        icosahedron.addVertex(new Point3D( 1, -t,  0));
+        icosahedron.AddVertex(new Point3D(-1,  t,  0));
+        icosahedron.AddVertex(new Point3D( 1,  t,  0));
+        icosahedron.AddVertex(new Point3D(-1, -t,  0));
+        icosahedron.AddVertex(new Point3D( 1, -t,  0));
 
-        icosahedron.addVertex(new Point3D( 0, -1,  t));
-        icosahedron.addVertex(new Point3D( 0,  1,  t));
-        icosahedron.addVertex(new Point3D( 0, -1, -t));
-        icosahedron.addVertex(new Point3D( 0,  1, -t));
+        icosahedron.AddVertex(new Point3D( 0, -1,  t));
+        icosahedron.AddVertex(new Point3D( 0,  1,  t));
+        icosahedron.AddVertex(new Point3D( 0, -1, -t));
+        icosahedron.AddVertex(new Point3D( 0,  1, -t));
 
-        icosahedron.addVertex(new Point3D( t,  0, -1));
-        icosahedron.addVertex(new Point3D( t,  0,  1));
-        icosahedron.addVertex(new Point3D(-t,  0, -1));
-        icosahedron.addVertex(new Point3D(-t,  0,  1));
+        icosahedron.AddVertex(new Point3D( t,  0, -1));
+        icosahedron.AddVertex(new Point3D( t,  0,  1));
+        icosahedron.AddVertex(new Point3D(-t,  0, -1));
+        icosahedron.AddVertex(new Point3D(-t,  0,  1));
 
 
         // create 20 triangles of the icosahedron
@@ -125,9 +124,9 @@ public class Icosahedron
             for (var tri : faces)
             {
                 // replace triangle by 4 triangles
-                int a = icosahedron.getMiddlePoint(tri.v1, tri.v2);
-                int b = icosahedron.getMiddlePoint(tri.v2, tri.v3);
-                int c = icosahedron.getMiddlePoint(tri.v3, tri.v1);
+                int a = icosahedron.InsertMiddlePoint(tri.v1, tri.v2);
+                int b = icosahedron.InsertMiddlePoint(tri.v2, tri.v3);
+                int c = icosahedron.InsertMiddlePoint(tri.v3, tri.v1);
 
                 faces2.add(new TriangleIndices(tri.v1, a, c));
                 faces2.add(new TriangleIndices(tri.v2, b, a));

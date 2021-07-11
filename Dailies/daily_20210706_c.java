@@ -376,7 +376,7 @@ public class daily_20210706_c extends AbstractDaily
 
         if (n > -factor && n < factor) 
         {
-          var hsba = Color.IntToHsba(canvas.pixels[index]);
+          var hsba = Color.IntToHsb(canvas.pixels[index]);
 
           canvas.pixels[index] = Color.HsbToInt(Color.HueAdjust(hsba[0], 10, 10),
               Color.SaturationAdjust(hsba[1], 0.055, 0.055), Color.BrightnessAdjust(hsba[2], 0.055, 0.055), hsba[3]);
@@ -755,7 +755,7 @@ public class daily_20210706_c extends AbstractDaily
 
         if(n > -factor && n < factor)
         {
-          var hsba = Color.IntToHsba(canvas.pixels[index]);
+          var hsba = Color.IntToHsb(canvas.pixels[index]);
           //canvas.pixels[index] = Color.HsbaToInt(Color.HueAdjust(hsba[0], 90), hsba[1], hsba[2], hsba[3]);
           //canvas.pixels[index] = Color.HsbaToInt(hsba[0], hsba[1], Color.BrightnessAdjust(hsba[2], 0.10), hsba[3]);
           canvas.pixels[index] = Color.HsbToInt(Color.HueAdjust(hsba[0], 5), hsba[1], Color.BrightnessAdjust(hsba[2], 0.075), hsba[3]);
@@ -789,7 +789,8 @@ public class daily_20210706_c extends AbstractDaily
         var index = (int) (y * bottom.height + x);
 
         if (bottom.pixels[index] != 0 && bottom.pixels[index] != white && top.pixels[index] != 0) {
-          var rgba = Color.IntToRgba(top.pixels[index]);
+          
+          var rgba = Color.IntToRgb(top.pixels[index]);
 
           var a = (int) (maskGenerator.Value(x, y) * 255.0);
 
@@ -798,7 +799,6 @@ public class daily_20210706_c extends AbstractDaily
           }
 
           top.pixels[index] = Color.RgbToInt(rgba[0], rgba[1], rgba[2], a);
-          // top.pixels[index] = Color.RgbaToInt(rgba[0], rgba[1], rgba[2], (int)((double)rgba[3] * 0.5));
         }
 
       }
@@ -813,7 +813,7 @@ public class daily_20210706_c extends AbstractDaily
  
   private void Overlay(PGraphics canvas, int overlay)
   {
-    var overlayRgba = Color.IntToRgba(overlay);
+    var overlayRgba = Color.IntToRgb(overlay);
 
     canvas.beginDraw();
     
@@ -827,7 +827,7 @@ public class daily_20210706_c extends AbstractDaily
 
         var c = canvas.pixels[index];
 
-        var rgba = Color.IntToRgba(c);
+        var rgba = Color.IntToRgb(c);
 
         rgba[0] = rgba[0] < overlayRgba[0] ? overlayRgba[0] : rgba[0];
         rgba[1] = rgba[1] < overlayRgba[1] ? overlayRgba[1] : rgba[1];

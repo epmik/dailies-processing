@@ -143,7 +143,7 @@ public class daily_20210628_b extends AbstractDaily
 
     // DrawBackgroundGradient(_backgroundCanvas, _backgroundNoiseGenerator);
 
-     _skinColorPick = loadImage(PathCombine(ClassFolderInput(), "skin.png"));
+     _skinColorPick = loadImage(ResolveInputFile("skin.png"));
      _skinColorPick.loadPixels();
 
      _skinColorRow = RandomGenerator.Value(0, _skinColorPick.height);

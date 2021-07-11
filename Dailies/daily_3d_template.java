@@ -112,18 +112,24 @@ public class daily_3d_template extends AbstractDaily
     Canvas.background(178);
 
     Canvas.strokeWeight(1);
-    Canvas.stroke(255);
-    Canvas.fill(125);
 
     Canvas.lights();
     Canvas.ambientLight(5, 5, 5);
     Canvas.directionalLight(243, 102, 126, (float)Math.Cos(_directionalLightRotation), 0, (float)Math.Sin(_directionalLightRotation));
+    
+    Canvas.pushMatrix();
+    Canvas.translate(500F, Canvas.height * 0.35F, -200F);
+    Canvas.fill(164);
+    Canvas.noStroke();
+    Canvas.sphere(200);
+    Canvas.popMatrix();
 
     Canvas.pushMatrix();
     Canvas.translate(130, height/2, 0);
     Canvas.rotateY(1.25F);
     Canvas.rotateX(-0.4F);
     Canvas.noStroke();
+    Canvas.fill(125, 125, 125, 125);
     Canvas.box(100);
     Canvas.popMatrix();
   
@@ -132,15 +138,8 @@ public class daily_3d_template extends AbstractDaily
     Canvas.rotateX(PI / 9);
     Canvas.rotateY(PI / 5 + _boxRotation);
     Canvas.noStroke();
-    Canvas.fill(64);
+    Canvas.fill(64, 64, 64, 64);
     Canvas.box(150);
-    Canvas.popMatrix();
-    
-    Canvas.pushMatrix();
-    Canvas.translate(500F, Canvas.height * 0.35F, -200F);
-    Canvas.fill(164);
-    Canvas.stroke(255);
-    Canvas.sphere(200);
     Canvas.popMatrix();
     
     Canvas.endDraw();

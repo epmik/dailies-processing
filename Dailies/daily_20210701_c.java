@@ -127,7 +127,7 @@ public class daily_20210701_c extends AbstractDaily
 
     for (var i = 1; i < 4; i++)
     {
-      var p = loadImage(PathCombine(ClassFolderInput(), "palette" + i + ".png"));
+      var p = loadImage(ResolveInputFile("palette" + i + ".png"));
 
       p.loadPixels();
 

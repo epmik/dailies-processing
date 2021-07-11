@@ -1,12 +1,17 @@
 package Dailies;
 
 import processing.core.*;
+import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.time.Duration;
 import java.time.Instant;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import controlP5.*;
 
@@ -52,16 +57,10 @@ public abstract class AbstractDaily extends PApplet {
   {
     super.setup();
 
-    CreateClassDirectories();
-
     NoiseGenerator = new OpenSimplexNoiseGenerator();
     RandomGenerator = new RandomGenerator();
 
     Gui = new ControlP5(this);
-
-    Gui.addCallback(new GuiCallbackListener(this));
-    Gui.addListener(new GuiControlListener(this));
-
     Canvas = CreateAndSetupGraphics();
 
     System.out.println("AbstractDaily.setup done");
@@ -112,52 +111,6 @@ public abstract class AbstractDaily extends PApplet {
     Draw(elapsedTime);
   }
 
-  protected void CreateClassDirectories() 
-  {
-    CreateDirectory(ClassFolder());
-    CreateDirectory(ClassFolderInput());
-    CreateDirectory(ClassFolderOutput());
-  }
-
-  protected boolean CreateClassDirectory(String directory) 
-  {
-    return CreateDirectory(ClassFolder() + File.separator + directory);
-  }
-
-  private boolean CreateDirectory(String path) 
-  {
-    var directory = new File(path);
-
-    return directory.mkdir();
-  }
-
-  protected String ClassFolder() 
-  {
-    return "data" + File.separator + ClassName();
-  }
-
-  protected String ClassFolderInput() 
-  {
-    return ClassFolder() + File.separator + "in";
-  }
-
-  protected String ClassFolderOutput() 
-  {
-    return ClassFolder() + File.separator + "out";
-  }
-
-  public static String PathCombine(String... paths)
-  {
-      File file = new File(paths[0]);
-
-      for (int i = 1; i < paths.length; i++) 
-      {
-          file = new File(file, paths[i]);
-      }
-
-      return file.getPath();
-  }
-
   public void Update(double elapsedTime) {
 
   }
@@ -166,25 +119,25 @@ public abstract class AbstractDaily extends PApplet {
 
   }
 
-  public void mousePressed() {
+  public void mousePressed(MouseEvent event) {
     if (!PropagateMouseEvents) {
       return;
     }
   }
 
-  public void mouseDragged() {
+  public void mouseDragged(MouseEvent event) {
     if (!PropagateMouseEvents) {
       return;
     }
   }
 
-  public void mouseReleased() 
+  public void mouseReleased(MouseEvent event) 
   {
     if (!PropagateMouseEvents) {
       return;
     }
 
-    if (ResetOnRightMouseRelease && mouseButton == RIGHT)
+    if (ResetOnRightMouseRelease && event.getButton() == PConstants.RIGHT)
     {
       NoiseGenerator.ReSeed();
       RandomGenerator.ReSeed();
@@ -197,13 +150,13 @@ public abstract class AbstractDaily extends PApplet {
     }
   }
 
-  public void keyPressed() {
+  public void keyPressed(KeyEvent event) {
     if (!PropagateKeyboardEvents) {
       return;
     }
 
-    if (key == CODED) {
-      switch (keyCode) {
+    if (event.getKey() == PConstants.CODED) {
+      switch (event.getKeyCode()) {
         case CONTROL:
           break;
         case SHIFT:
@@ -222,14 +175,14 @@ public abstract class AbstractDaily extends PApplet {
     }
   }
 
-  public void keyReleased() {
+  public void keyReleased(KeyEvent event) {
 
     if (!PropagateKeyboardEvents && !(key != CODED && key == 's')) {
       return;
     }
 
-    if (key == CODED) {
-      switch (keyCode) {
+    if (event.getKey() == PConstants.CODED) {
+      switch (event.getKeyCode()) {
         case CONTROL:
           break;
         case SHIFT:
@@ -248,7 +201,7 @@ public abstract class AbstractDaily extends PApplet {
           break;
       }
     } else {
-      switch (key) {
+      switch (event.getKey()) {
         case 's':
           SaveFrame(Canvas);
           break;
@@ -262,12 +215,129 @@ public abstract class AbstractDaily extends PApplet {
   {
     return this.getClass().getSimpleName();
   }
+  // protected void CreateClassDirectories() 
+  // {
+  //   CreateDirectory(ClassFolder());
+  //   CreateDirectory(ClassFolderInput());
+  //   CreateDirectory(ClassFolderOutput());
+  // }
+
+  protected boolean CreateClassOutputDirectory() 
+  {
+    var directory = new File(PathCombine(InputDirectory(), ClassName()));
+
+    return directory.mkdir();
+  }
+
+  // protected String ClassFolder() 
+  // {
+  //   return "data" + File.separator + ClassName();
+  // }
+
+  protected String InputDirectory() 
+  {
+    return "data" + File.separator  + "in";
+  }
+
+  protected String OutputDirectory() 
+  {
+    return "data" + File.separator  + "out";
+  }
+
+  public static String PathCombine(String... paths)
+  {
+      File file = new File(paths[0]);
+
+      for (int i = 1; i < paths.length; i++) 
+      {
+          file = new File(file, paths[i]);
+      }
+
+      return file.getPath();
+  }
+
+  public static boolean FileExists(String path)
+  {
+    var file = new File(path);
+
+    return file.exists() && !file.isDirectory();
+  }
+
+  protected String ResolveInputFile(String file)
+  {
+    var name = ClassName();
+
+    // first try to load from a directory whose name is identical to the class name
+    var destination = PathCombine(InputDirectory(), PathCombine(name, file));
+
+    try 
+    {
+
+      if (FileExists(destination)) {
+        return destination;
+      }
+      
+      CreateClassOutputDirectory();
+
+      // try to load from a directory whose name is identical to the generic part of the class name: only the 'daily_' and date part like 'daily_20210622'
+
+      name = name.substring(0, "daily_yyyyMMdd".length());
+      var path = PathCombine(InputDirectory(), PathCombine(name, file));
+
+      if (FileExists(path)) {
+        CopyFile(path, destination);
+        return destination;
+      }
+
+      // try to load from a directory whose name is identical to the generic part of the class name, without the day part: only the 'daily_' and date part like 'daily_202106'
+
+      name = name.substring(0, "daily_yyyyMM".length());
+      path = PathCombine(InputDirectory(), PathCombine(name, file));
+
+      if (FileExists(path)) {
+        CopyFile(path, destination);
+        return destination;
+      }
+
+      // try to load from a directory whose name is identical to the generic part of the class name, without the month/day part: only the 'daily_' and date part like 'daily_2021'
+
+      name = name.substring(0, "daily_yyyy".length());
+      path = PathCombine(InputDirectory(), PathCombine(name, file));
+
+      if (FileExists(path)) {
+        CopyFile(path, destination);
+        return destination;
+      }
+
+      // try to load from the input directory
+
+      path = PathCombine(InputDirectory(), file);
+
+      if (FileExists(path)) {
+        CopyFile(path, destination);
+        return destination;
+      }
+
+      throw new FileNotFoundException("ResolveInputFile(String) could not resolve the file: " + file);
+    } 
+    catch (IOException e) 
+    {
+      System.out.println(e.getMessage());
+
+      return file;
+    }
+  }
+  
+  private void CopyFile(String source, String destination) throws IOException
+  {
+    Files.copy(new File(source).toPath(), new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
+  }
   
   protected void SaveFrame(PImage canvas) 
   {
     DateFormat dateFormat = new java.text.SimpleDateFormat("yyyyMMdd.HHmmss.SSS");
 
-    SaveFrame(canvas, PathCombine(ClassFolderOutput(), dateFormat.format(java.util.Calendar.getInstance().getTime()) + "." + ClassName() + ".png"));
+    SaveFrame(canvas, PathCombine(OutputDirectory(), dateFormat.format(java.util.Calendar.getInstance().getTime()) + "." + ClassName() + ".png"));
   }
   
   protected void SaveFrame(PImage canvas, String path) 
